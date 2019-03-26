@@ -5,73 +5,28 @@ public class Main {
 
     private static void solve() {
         int n = in.nextInt();
-        String s = in.next();
-        String ns = "";
+        int k = in.nextInt();
 
+        ArrayList<MyPair> list = new ArrayList<>();
         for (int i = 0; i < n; ++i) {
-            if (i == 0 || (s.charAt(i) != s.charAt(i - 1))) {
-                ns += s.charAt(i);
-            }
+            int ti = in.nextInt();
+            int bi = in.nextInt();
+            list.add(new MyPair(ti, bi));
         }
 
-        int[][][] dp = new int[n + 10][n + 10][30];
-        n = ns.length();
+        list.sort((o1, o2) -> Integer.compare(o2.y, o1.y));
 
-        for (int i = 0; i <= n; ++i) {
-            for (int j = 0; j <= n; ++j) {
-                for (int k = 0; k < 26; ++k) {
-                    dp[i][j][k] = n;
-                }
-            }
-        }
+        Queue<Integer> que = new PriorityQueue<>(n);
+
+        long ans = 0;
+        long sum = 0;
+        int idx = 0;
         for (int i = 0; i < n; ++i) {
-            dp[i][i][ns.charAt(i) - 'a'] = 1;
-        }
-
-        for (int len = 2; len <= n; ++len) {
-            for (int beg = 0; beg + len - 1 < n; ++beg) {
-                int ed = beg + len - 1;
-                int mx = dp[beg][ed][0];
-                for (int k = 0; k < 26; ++k) {
-                    mx = Math.min(mx, dp[beg][ed][k]);
-                }
-                int c = 0;
-                int d = 0;
-                if (beg > 0) {
-                    c = ns.charAt(beg - 1) - 'a';
-                }
-                if (ed + 1 < n) {
-                    d = ns.charAt(ed + 1) - 'a';
-                }
-                if (beg > 0) {
-                    dp[beg - 1][ed][c] = Math.min(dp[beg - 1][ed][c], mx + 1);
-                }
-                if (ed < n - 1) {
-                    dp[beg][ed + 1][d] = Math.min(dp[beg][ed + 1][d], mx + 1);
-                }
-                if (beg > 0 && ed < n - 1 && c == d) {
-                    dp[beg - 1][ed + 1][c] = Math.min(dp[beg - 1][ed + 1][c], mx + 1);
-                }
-                for (int k = 0; k < 26; ++k) {
-                    if (beg > 0) {
-                        dp[beg - 1][ed][k] = Math.min(dp[beg - 1][ed][k], dp[beg][ed][k]);
-                    }
-                    if (ed < n - 1) {
-                        dp[beg][ed + 1][k] = Math.min(dp[beg][ed + 1][k], dp[beg][ed][k]);
-                    }
-                    if (beg > 0 && ed < n - 1 && c == d) {
-                        dp[beg - 1][ed + 1][k] = Math.min(dp[beg - 1][ed + 1][k], dp[beg][ed][k]);
-                    }
-                }
+            while (que.size() < k && idx < n) {
+                que.add()
+                idx++;
             }
         }
-
-        out.println(dp[0][1][0]);
-        int ans = n;
-        for (int k = 0; k < 26; ++k) {
-            ans = Math.min(ans, dp[0][n - 1][k]);
-        }
-        out.println(ans);
     }
 
     // -----------------------  Common Func ------------------------
@@ -154,11 +109,11 @@ public class Main {
         }
     }
 
-    public static class myPair {
+    public static class MyPair {
         int x;
         int y;
 
-        myPair(int x, int y) {
+        MyPair(int x, int y) {
             this.x = x;
             this.y = y;
         }
